@@ -1,0 +1,2059 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f172a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="StreakRise" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <title>StreakRise — Discipline &amp; Learning Tracker</title>
+
+  <!-- StreakRise icon -->
+  <link id="faviconLink" rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 1024 1024%22%3E%3Cdefs%3E%0A%3ClinearGradient id=%22bg%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E%3Cstop offset=%220%22 stop-color=%22%230f172a%22/%3E%3Cstop offset=%221%22 stop-color=%22%231e293b%22/%3E%3C/linearGradient%3E%0A%3ClinearGradient id=%22ring%22 x1=%220%22 y1=%221%22 x2=%221%22 y2=%220%22%3E%3Cstop offset=%220%22 stop-color=%22%2310b981%22/%3E%3Cstop offset=%221%22 stop-color=%22%233b82f6%22/%3E%3C/linearGradient%3E%0A%3C/defs%3E%3Crect width=%221024%22 height=%221024%22 rx=%22224%22 fill=%22url%28%23bg%29%22/%3E%3Cg transform=%22translate%28512 512%29 scale%281%29 translate%28-512 -512%29%22%3E%0A%3Ccircle cx=%22512%22 cy=%22512%22 r=%22300%22 fill=%22none%22 stroke=%22%23243247%22 stroke-width=%2256%22/%3E%0A%3Ccircle cx=%22512%22 cy=%22512%22 r=%22300%22 fill=%22none%22 stroke=%22url%28%23ring%29%22 stroke-width=%2256%22 stroke-linecap=%22round%22 stroke-dasharray=%221414 1885%22 transform=%22rotate%28-90 512 512%29%22/%3E%0A%3Cpath d=%22M392 520 L478 606 L640 430%22 fill=%22none%22 stroke=%22%23f8fafc%22 stroke-width=%2264%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%0A%3Cpath d=%22M512 150 L512 150%22 stroke=%22%2310b981%22 stroke-width=%220%22/%3E%0A%3C/g%3E%3C/svg%3E" />
+
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --surface: #0b1120;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --accent: #10b981;
+      --accent-hover: #059669;
+      --blue: #3b82f6;
+      --amber: #f59e0b;
+      --danger: #ef4444;
+      --border: #334155;
+      --nav-h: 66px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.45;
+    }
+
+    /* Brand Icon */
+    .bd-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 11px;
+      overflow: hidden;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+    }
+
+    .bd-logo svg { width: 100%; height: 100%; display: block; }
+
+    .app-footer {
+      margin-top: 8px;
+      padding: 14px 8px 6px;
+      text-align: center;
+      font-size: 0.74rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      line-height: 1.5;
+    }
+
+    .login-footer {
+      margin-top: 18px;
+      text-align: center;
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    /* Overlays (Login & Slip Password) */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(11, 17, 32, 0.97);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 1000;
+    }
+
+    .auth-card {
+      width: 100%;
+      max-width: 390px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+    }
+
+    .auth-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .auth-card h2 {
+      color: var(--text);
+      font-size: 1.25rem;
+    }
+
+    .auth-card .sub {
+      color: var(--accent);
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .auth-desc {
+      color: var(--muted);
+      font-size: 0.88rem;
+      margin-bottom: 18px;
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 5px;
+    }
+
+    .field input {
+      width: 100%;
+    }
+
+    .pass-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .pass-wrap input {
+      padding-right: 60px;
+    }
+
+    .toggle-pass {
+      position: absolute;
+      right: 8px;
+      background: transparent;
+      color: var(--muted);
+      border: none;
+      font-size: 0.78rem;
+      padding: 6px;
+      min-height: auto;
+    }
+
+    .error-msg {
+      color: var(--danger);
+      font-size: 0.84rem;
+      min-height: 20px;
+      margin-bottom: 8px;
+    }
+
+    .status-msg {
+      color: var(--accent);
+      font-size: 0.84rem;
+      margin-top: 8px;
+    }
+
+    /* Mobile App Shell */
+    .app-shell {
+      max-width: 540px;
+      margin: 0 auto;
+      min-height: 100vh;
+      display: none;
+      flex-direction: column;
+      padding-bottom: calc(var(--nav-h) + 20px + env(safe-area-inset-bottom));
+    }
+
+    .top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .top-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .top-title h1 {
+      font-size: 1.08rem;
+      color: var(--text);
+      line-height: 1.2;
+    }
+
+    .top-title span {
+      font-size: 0.75rem;
+      color: var(--accent);
+      font-weight: 600;
+      display: block;
+    }
+
+    .main-content {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .tab-panel {
+      display: none;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .tab-panel.active {
+      display: flex;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .card h2 {
+      font-size: 1.05rem;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* Bottom Navigation Bar */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 540px;
+      height: calc(var(--nav-h) + env(safe-area-inset-bottom));
+      padding-bottom: env(safe-area-inset-bottom);
+      background: rgba(15, 23, 42, 0.96);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      z-index: 60;
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 6px 4px;
+      border-radius: 0;
+    }
+
+    .nav-btn svg {
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .nav-btn.active {
+      color: var(--accent);
+    }
+
+    /* Inputs & Touch-friendly Buttons */
+    .row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    label.inline-label {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    input, select, textarea, button {
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      padding: 10px 12px;
+      font-size: 0.92rem;
+      min-height: 42px;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: 2px solid var(--accent);
+      border-color: transparent;
+    }
+
+    button {
+      cursor: pointer;
+      font-weight: 600;
+      border: none;
+      transition: transform 0.1s, opacity 0.2s;
+    }
+
+    button:active {
+      transform: scale(0.97);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #052e16;
+    }
+
+    .btn-blue {
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .btn-amber {
+      background: rgba(245, 158, 11, 0.16);
+      color: var(--amber);
+      border: 1px solid var(--amber);
+    }
+
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.16);
+      color: var(--danger);
+      border: 1px solid var(--danger);
+    }
+
+    .btn-ghost {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    /* Timer */
+    .timer-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .time-box {
+      background: var(--surface);
+      padding: 12px 4px;
+      border-radius: 12px;
+      text-align: center;
+      border: 1px solid var(--border);
+    }
+
+    .time-box span {
+      display: block;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--accent);
+    }
+
+    .time-box small {
+      color: var(--muted);
+      text-transform: uppercase;
+      font-size: 0.65rem;
+      letter-spacing: 0.04em;
+    }
+
+    /* Goal Ring & Progress */
+    .goal-layout {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 12px;
+    }
+
+    .ring-wrap {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      flex-shrink: 0;
+    }
+
+    .ring-center {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ring-center strong {
+      font-size: 1rem;
+      color: var(--accent);
+    }
+
+    .ring-center span {
+      font-size: 0.66rem;
+      color: var(--muted);
+    }
+
+    .goal-bars {
+      flex: 1;
+      min-width: 160px;
+    }
+
+    .progress-stats {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      font-size: 0.85rem;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .highlight-rem {
+      color: var(--amber);
+      font-weight: 700;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 14px;
+      background: var(--surface);
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      margin-bottom: 8px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--blue));
+      transition: width 0.4s ease;
+    }
+
+    /* Pie Chart */
+    .pie-layout {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .pie-legend {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      font-size: 0.88rem;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* Calendar */
+    .cal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      gap: 8px;
+    }
+
+    .cal-weekdays, .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 5px;
+    }
+
+    .cal-weekdays div {
+      text-align: center;
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-weight: 600;
+      padding-bottom: 4px;
+    }
+
+    .cal-day {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      min-height: 50px;
+      padding: 4px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+
+    .cal-day.empty {
+      background: transparent;
+      border: none;
+      cursor: default;
+    }
+
+    .cal-day.selected {
+      outline: 2px solid var(--blue);
+    }
+
+    .cal-day.clean-day {
+      background: rgba(16, 185, 129, 0.12);
+      border-color: rgba(16, 185, 129, 0.45);
+    }
+
+    .cal-day.slip-day {
+      background: rgba(239, 68, 68, 0.15);
+      border-color: rgba(239, 68, 68, 0.55);
+    }
+
+    .cal-day-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.74rem;
+      font-weight: 600;
+    }
+
+    .cal-day-bottom {
+      display: flex;
+      justify-content: center;
+      font-size: 0.7rem;
+    }
+
+    .badge-clean { color: var(--accent); font-weight: 700; }
+    .badge-slip { color: var(--danger); font-weight: 700; }
+    .badge-note {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--blue);
+      display: inline-block;
+    }
+
+    .day-inspector {
+      margin-top: 12px;
+      padding: 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    /* Daily Learning */
+    textarea {
+      width: 100%;
+      min-height: 82px;
+      resize: vertical;
+      margin: 10px 0;
+    }
+
+    .learning-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .learning-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .learning-date {
+      font-size: 0.76rem;
+      color: var(--blue);
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+
+    .delete-btn {
+      background: transparent;
+      color: var(--muted);
+      padding: 4px 8px;
+      font-size: 0.8rem;
+      min-height: auto;
+    }
+
+    /* Report Table & Print Header */
+    .table-wrap {
+      margin-top: 12px;
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.84rem;
+      background: var(--surface);
+    }
+
+    th, td {
+      padding: 9px 10px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #162033;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .status-tick { color: var(--accent); font-weight: 700; }
+    .status-cross { color: var(--danger); font-weight: 700; }
+
+    .print-only-header {
+      display: none;
+    }
+
+    .install-tip {
+      font-size: 0.8rem;
+      color: var(--muted);
+      background: var(--surface);
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+      padding: 12px;
+    }
+
+    /* Native Print / Save as PDF Styles */
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        padding: 0 !important;
+      }
+      .no-print, .overlay, .top-bar, .bottom-nav {
+        display: none !important;
+      }
+      .app-shell {
+        display: block !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+      }
+      .main-content, .tab-panel {
+        display: block !important;
+        padding: 0 !important;
+      }
+      .tab-panel:not(#tab-reports) {
+        display: none !important;
+      }
+      .card {
+        border: none !important;
+        background: #ffffff !important;
+        padding: 0 !important;
+      }
+      .print-only-header {
+        display: block !important;
+        margin-bottom: 12px;
+        border-bottom: 2px solid #0f172a;
+        padding-bottom: 8px;
+      }
+      .print-only-header h1 {
+        font-size: 18px;
+        color: #0f172a;
+      }
+      .print-only-header p {
+        font-size: 12px;
+        color: #334155;
+      }
+      .table-wrap {
+        display: block !important;
+        overflow: visible !important;
+        border: 1px solid #94a3b8 !important;
+      }
+      table {
+        background: #ffffff !important;
+        color: #000000 !important;
+      }
+      th {
+        background: #e2e8f0 !important;
+        color: #0f172a !important;
+      }
+      th, td {
+        border: 1px solid #cbd5e1 !important;
+      }
+      .status-tick { color: #059669 !important; }
+      .status-cross { color: #dc2626 !important; }
+    }
+  </style>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="appIcon" viewBox="0 0 1024 1024"><defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0f172a"/><stop offset="1" stop-color="#1e293b"/></linearGradient>
+<linearGradient id="ring" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#10b981"/><stop offset="1" stop-color="#3b82f6"/></linearGradient>
+</defs><rect width="1024" height="1024" rx="224" fill="url(#bg)"/><g transform="translate(512 512) scale(1) translate(-512 -512)">
+<circle cx="512" cy="512" r="300" fill="none" stroke="#243247" stroke-width="56"/>
+<circle cx="512" cy="512" r="300" fill="none" stroke="url(#ring)" stroke-width="56" stroke-linecap="round" stroke-dasharray="1414 1885" transform="rotate(-90 512 512)"/>
+<path d="M392 520 L478 606 L640 430" fill="none" stroke="#f8fafc" stroke-width="64" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M512 150 L512 150" stroke="#10b981" stroke-width="0"/>
+</g></symbol></defs></svg>
+
+  <!-- 1. LOGIN LOCK SCREEN -->
+  <div id="loginScreen" class="overlay">
+    <div class="auth-card">
+      <div class="auth-brand">
+        <div class="bd-logo"><svg viewBox="0 0 1024 1024" aria-hidden="true"><use href="#appIcon"/></svg></div>
+        <div>
+          <h2>StreakRise</h2>
+          <div class="sub">Discipline &amp; Learning Tracker</div>
+        </div>
+      </div>
+      <p class="auth-desc">Sign in to unlock your personal discipline &amp; learning tracker.</p>
+
+      <div class="field">
+        <label for="loginId">User ID</label>
+        <input type="text" id="loginId" placeholder="Enter User ID" autocomplete="username" />
+      </div>
+
+      <div class="field">
+        <label for="loginPass">Password</label>
+        <div class="pass-wrap">
+          <input type="password" id="loginPass" placeholder="Enter Password" autocomplete="current-password" />
+          <button type="button" class="toggle-pass" onclick="togglePassVisibility('loginPass', this)">Show</button>
+        </div>
+      </div>
+
+      <div id="loginError" class="error-msg"></div>
+      <button class="btn-primary" style="width:100%;" onclick="attemptLogin()">Unlock App</button>
+      <div class="login-footer">Created by Birendra Dangi, Copyright Reserved 2026</div>
+    </div>
+  </div>
+
+  <!-- 2. PASSWORD MODAL FOR +1 SLIP -->
+  <div id="slipPasswordModal" class="overlay" style="display:none;">
+    <div class="auth-card">
+      <h2>Confirm Slip (+1)</h2>
+      <p class="auth-desc">Enter password to log a slip for <strong id="slipModalDateLabel" style="color:var(--text);"></strong>.</p>
+
+      <div class="field">
+        <label for="slipPassInput">Password</label>
+        <div class="pass-wrap">
+          <input type="password" id="slipPassInput" placeholder="Enter Password" />
+          <button type="button" class="toggle-pass" onclick="togglePassVisibility('slipPassInput', this)">Show</button>
+        </div>
+      </div>
+
+      <div id="slipModalError" class="error-msg"></div>
+
+      <div class="row" style="justify-content:flex-end;">
+        <button class="btn-ghost" onclick="closeSlipModal()">Cancel</button>
+        <button class="btn-danger" onclick="confirmAddSlip()">Verify &amp; Add +1 Slip</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. MOBILE APP SHELL -->
+  <div class="app-shell" id="appContainer">
+    <!-- Top App Bar -->
+    <header class="top-bar no-print">
+      <div class="top-title">
+        <div class="bd-logo"><svg viewBox="0 0 1024 1024" aria-hidden="true"><use href="#appIcon"/></svg></div>
+        <div>
+          <h1>StreakRise</h1>
+          <span>Discipline &amp; Learning</span>
+        </div>
+      </div>
+      <button class="btn-ghost" style="min-height:36px; padding:6px 12px; font-size:0.82rem;" onclick="lockApp()">Lock</button>
+    </header>
+
+    <main class="main-content">
+
+      <!-- TAB 1: HOME (TIMER + GOAL) -->
+      <div id="tab-home" class="tab-panel active no-print">
+        <section class="card">
+          <h2>Clean Streak Timer</h2>
+          <div class="timer-grid">
+            <div class="time-box"><span id="days">0</span><small>Days</small></div>
+            <div class="time-box"><span id="hours">0</span><small>Hours</small></div>
+            <div class="time-box"><span id="minutes">0</span><small>Mins</small></div>
+            <div class="time-box"><span id="seconds">0</span><small>Secs</small></div>
+          </div>
+
+          <div class="row" style="margin-bottom:10px;">
+            <label class="inline-label" for="streakStartInput">Streak Start:</label>
+            <input type="datetime-local" id="streakStartInput" style="flex:1; min-width:170px;" />
+            <button class="btn-primary" onclick="updateStreakStart()">Save</button>
+          </div>
+
+          <div class="row">
+            <label class="inline-label" for="journeyStartInput">Tracking From:</label>
+            <input type="date" id="journeyStartInput" style="flex:1; min-width:140px;" />
+            <button class="btn-ghost" onclick="updateJourneyStart()">Update</button>
+          </div>
+          <div id="timerStatusMsg" class="status-msg"></div>
+        </section>
+
+        <section class="card">
+          <h2>Goal Timeline</h2>
+          <div class="row">
+            <label class="inline-label" for="goalSelect">Target:</label>
+            <select id="goalSelect" onchange="updateGoalPreset()" style="flex:1;">
+              <option value="7">1 Week (7 Days)</option>
+              <option value="30">1 Month (30 Days)</option>
+              <option value="90" selected>3 Months (90 Days)</option>
+              <option value="180">6 Months (180 Days)</option>
+              <option value="365">1 Year (365 Days)</option>
+              <option value="custom">Custom Days...</option>
+            </select>
+            <input type="number" id="customDaysInput" min="1" placeholder="Days" style="width:80px; display:none;" />
+            <button class="btn-blue" id="saveCustomBtn" style="display:none;" onclick="saveCustomDays()">Set</button>
+          </div>
+
+          <div class="goal-layout">
+            <div class="ring-wrap">
+              <svg width="100" height="100" viewBox="0 0 110 110">
+                <circle cx="55" cy="55" r="46" fill="none" stroke="#0b1120" stroke-width="12" />
+                <circle id="goalRingCircle" cx="55" cy="55" r="46" fill="none" stroke="#10b981" stroke-width="12"
+                  stroke-linecap="round" stroke-dasharray="289.03" stroke-dashoffset="289.03"
+                  transform="rotate(-90 55 55)" style="transition: stroke-dashoffset 0.4s ease;" />
+              </svg>
+              <div class="ring-center">
+                <strong id="ringPct">0%</strong>
+                <span>Done</span>
+              </div>
+            </div>
+
+            <div class="goal-bars">
+              <div class="progress-stats">
+                <span id="completedText">Done: 0.00%</span>
+                <span class="highlight-rem" id="remainingText">Remaining: 100.00%</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill" id="progressFill"></div>
+              </div>
+              <p id="goalDetails" style="font-size:0.82rem; color:var(--muted);"></p>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- TAB 2: CALENDAR -->
+      <div id="tab-calendar" class="tab-panel no-print">
+        <section class="card">
+          <div class="cal-header">
+            <button class="btn-ghost" style="min-height:36px; padding:6px 10px;" onclick="changeCalMonth(-1)">&larr;</button>
+            <strong id="calMonthLabel"></strong>
+            <button class="btn-ghost" style="min-height:36px; padding:6px 10px;" onclick="changeCalMonth(1)">&rarr;</button>
+          </div>
+
+          <div class="row" style="margin-bottom:10px; font-size:0.76rem; color:var(--muted);">
+            <span><strong class="badge-clean">&#10003;</strong> Clean</span>
+            <span><strong class="badge-slip">&#10007;</strong> Slipped</span>
+            <span><span class="badge-note"></span> Note</span>
+          </div>
+
+          <div class="cal-weekdays">
+            <div>Su</div><div>Mo</div><div>Tu</div><div>We</div><div>Th</div><div>Fr</div><div>Sa</div>
+          </div>
+          <div class="cal-grid" id="calGrid"></div>
+
+          <div class="day-inspector">
+            <div class="row" style="justify-content:space-between; margin-bottom:8px;">
+              <strong id="inspectorDateTitle" style="font-size:0.95rem;">Selected Day</strong>
+              <span id="inspectorSlipBadge" style="font-size:0.85rem;"></span>
+            </div>
+            <div id="inspectorLearnings" style="font-size:0.84rem; color:var(--muted); margin-bottom:10px;"></div>
+            <button class="btn-danger" style="width:100%;" onclick="openSlipPasswordModal()">+1 Slip (Password Required)</button>
+          </div>
+        </section>
+      </div>
+
+      <!-- TAB 3: DAILY LEARNING -->
+      <div id="tab-learn" class="tab-panel no-print">
+        <section class="card">
+          <h2>What I Learned Today</h2>
+          <div class="row">
+            <label class="inline-label" for="learnDate">Date:</label>
+            <input type="date" id="learnDate" style="flex:1;" />
+          </div>
+          <textarea id="learnText" placeholder="Write a new skill, lesson, or insight you learned..."></textarea>
+          <button class="btn-primary" style="width:100%;" onclick="addLearning()">Save Learning Entry</button>
+          <div id="learnErrorMsg" class="error-msg" style="margin-top:6px;"></div>
+        </section>
+
+        <section class="card">
+          <h2>Learning History</h2>
+          <div class="learning-list" id="learningList"></div>
+        </section>
+      </div>
+
+      <!-- TAB 4: REPORTS & PIE CHART -->
+      <div id="tab-reports" class="tab-panel">
+        <section class="card no-print">
+          <h2>
+            <span>Habit Overview</span>
+            <select id="pieScope" onchange="renderPieChart()" style="padding:6px 10px; min-height:36px; font-size:0.8rem;">
+              <option value="month">This Month</option>
+              <option value="all">All Time</option>
+            </select>
+          </h2>
+          <div class="pie-layout">
+            <svg id="pieSvg" width="130" height="130" viewBox="0 0 140 140"></svg>
+            <div class="pie-legend" id="pieLegend"></div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="no-print">
+            <h2>PDF Report</h2>
+            <div class="row" style="margin-bottom:10px;">
+              <label class="inline-label" for="reportMode">Period:</label>
+              <select id="reportMode" onchange="toggleReportControls()" style="flex:1;">
+                <option value="week">Week-wise</option>
+                <option value="month">Month-wise</option>
+                <option value="custom">Custom Date Range</option>
+              </select>
+            </div>
+
+            <div id="weekControls" class="row" style="margin-bottom:10px;">
+              <label class="inline-label" for="weekStartInput">Week Start:</label>
+              <input type="date" id="weekStartInput" style="flex:1;" />
+              <button class="btn-ghost" onclick="setThisWeek()">This Week</button>
+            </div>
+
+            <div id="monthControls" class="row" style="display:none; margin-bottom:10px;">
+              <select id="reportMonthSelect" style="flex:1;">
+                <option value="0">January</option><option value="1">February</option>
+                <option value="2">March</option><option value="3">April</option>
+                <option value="4">May</option><option value="5">June</option>
+                <option value="6">July</option><option value="7">August</option>
+                <option value="8">September</option><option value="9">October</option>
+                <option value="10">November</option><option value="11">December</option>
+              </select>
+              <input type="number" id="reportYearInput" min="2000" max="2100" style="width:95px;" />
+            </div>
+
+            <div id="customControls" class="row" style="display:none; margin-bottom:10px;">
+              <input type="date" id="customFromInput" style="flex:1;" />
+              <span style="color:var(--muted);">to</span>
+              <input type="date" id="customToInput" style="flex:1;" />
+            </div>
+
+            <div class="row" style="margin-bottom:8px;">
+              <button class="btn-ghost" style="flex:1;" onclick="previewReport()">Preview Table</button>
+              <button class="btn-primary" style="flex:1;" onclick="viewPDF()">View PDF</button>
+            </div>
+            <div class="row">
+              <button class="btn-blue" style="flex:1;" onclick="downloadPDF()">Download PDF</button>
+              <button class="btn-amber" style="flex:1;" onclick="sharePDF()">Share PDF</button>
+            </div>
+
+            <div id="reportErrorMsg" class="error-msg" style="margin-top:8px;"></div>
+            <div id="reportStatusMsg" class="status-msg"></div>
+          </div>
+
+          <!-- Printable Report Header (Visible in Print / Save as PDF) -->
+          <div class="print-only-header">
+            <h1>StreakRise — Progress &amp; Learning Report (Birendra Dangi)</h1>
+            <p id="printSummaryLine"></p>
+          </div>
+
+          <div id="reportSummary" class="no-print" style="margin-top:10px; font-size:0.82rem; color:var(--muted);"></div>
+
+          <div class="table-wrap" id="reportPreviewWrap" style="display:none;">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width:56px;">Sr.No</th>
+                  <th style="width:118px;">Date</th>
+                  <th style="width:108px;">Status</th>
+                  <th>What I Learned</th>
+                </tr>
+              </thead>
+              <tbody id="reportPreviewBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <footer class="app-footer no-print">
+        Created by Birendra Dangi, Copyright Reserved 2026
+      </footer>
+
+    </main>
+
+    <!-- BOTTOM TAB BAR -->
+    <nav class="bottom-nav no-print">
+      <button class="nav-btn active" data-tab="home" onclick="switchTab('home')">
+        <svg viewBox="0 0 24 24"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
+        <span>Home</span>
+      </button>
+      <button class="nav-btn" data-tab="calendar" onclick="switchTab('calendar')">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        <span>Calendar</span>
+      </button>
+      <button class="nav-btn" data-tab="learn" onclick="switchTab('learn')">
+        <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        <span>Learn</span>
+      </button>
+      <button class="nav-btn" data-tab="reports" onclick="switchTab('reports')">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+        <span>Reports</span>
+      </button>
+    </nav>
+  </div>
+
+  <script>
+    const APP_USER = "birendrad";
+    const APP_PASS = "Birendra#123";
+    const STORAGE_KEY = "habit_growth_tracker_v2";
+    const OLD_KEY = "quit_and_grow_v1";
+
+    let isUnlocked = false;
+    let lastBlobUrl = null;
+    const IS_NATIVE = !!(window.Capacitor && typeof window.Capacitor.isNativePlatform === "function" && window.Capacitor.isNativePlatform());
+
+    function safeGetStorage(key) {
+      try { return localStorage.getItem(key); } catch (e) { return null; }
+    }
+    function safeSetStorage(key, val) {
+      try { localStorage.setItem(key, val); } catch (e) {}
+    }
+
+    function toDateStr(d) {
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${y}-${m}-${day}`;
+    }
+
+    function parseDateStr(str) {
+      const [y, m, d] = str.split("-").map(Number);
+      return new Date(y, m - 1, d);
+    }
+
+    function toLocalInputValue(ms) {
+      const d = new Date(ms);
+      const offset = d.getTimezoneOffset() * 60000;
+      return new Date(d.getTime() - offset).toISOString().slice(0, 16);
+    }
+
+    let state = {
+      streakStartTimestamp: Date.now(),
+      journeyStartDate: toDateStr(new Date()),
+      goalDays: 90,
+      slips: {},
+      learnings: []
+    };
+
+    let calYear = new Date().getFullYear();
+    let calMonth = new Date().getMonth();
+    let selectedDateStr = toDateStr(new Date());
+
+    function loadState() {
+      const saved = safeGetStorage(STORAGE_KEY);
+      if (saved) {
+        try { state = { ...state, ...JSON.parse(saved) }; return; } catch (e) {}
+      }
+      const old = safeGetStorage(OLD_KEY);
+      if (old) {
+        try {
+          const parsed = JSON.parse(old);
+          state.streakStartTimestamp = parsed.quitTimestamp || Date.now();
+          state.journeyStartDate = toDateStr(new Date(state.streakStartTimestamp));
+          state.goalDays = parsed.goalDays || 90;
+          state.learnings = parsed.learnings || [];
+          saveState();
+          return;
+        } catch (e) {}
+      }
+      saveState();
+    }
+
+    function saveState() {
+      safeSetStorage(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    // --- TABS ---
+    function switchTab(tabName) {
+      document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+      document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+      document.getElementById(`tab-${tabName}`).classList.add("active");
+      document.querySelector(`.nav-btn[data-tab="${tabName}"]`).classList.add("active");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      if (tabName === "reports") renderPieChart();
+    }
+
+    // --- AUTH ---
+    function togglePassVisibility(inputId, btn) {
+      const el = document.getElementById(inputId);
+      if (el.type === "password") {
+        el.type = "text";
+        btn.textContent = "Hide";
+      } else {
+        el.type = "password";
+        btn.textContent = "Show";
+      }
+    }
+
+    function attemptLogin() {
+      const id = document.getElementById("loginId").value.trim();
+      const pass = document.getElementById("loginPass").value;
+      const err = document.getElementById("loginError");
+
+      if (id === APP_USER && pass === APP_PASS) {
+        isUnlocked = true;
+        err.textContent = "";
+        document.getElementById("loginPass").value = "";
+        document.getElementById("loginScreen").style.display = "none";
+        document.getElementById("appContainer").style.display = "flex";
+        refreshAllViews();
+      } else {
+        err.textContent = "Invalid User ID or Password.";
+      }
+    }
+
+    function lockApp() {
+      isUnlocked = false;
+      closeSlipModal();
+      document.getElementById("appContainer").style.display = "none";
+      document.getElementById("loginScreen").style.display = "flex";
+      document.getElementById("loginPass").value = "";
+      document.getElementById("loginError").textContent = "";
+    }
+
+    document.getElementById("loginPass").addEventListener("keydown", e => { if (e.key === "Enter") attemptLogin(); });
+    document.getElementById("loginId").addEventListener("keydown", e => { if (e.key === "Enter") attemptLogin(); });
+    document.getElementById("slipPassInput").addEventListener("keydown", e => { if (e.key === "Enter") confirmAddSlip(); });
+
+    // --- INIT ---
+    function initUI() {
+      const todayStr = toDateStr(new Date());
+      document.getElementById("streakStartInput").value = toLocalInputValue(state.streakStartTimestamp);
+      document.getElementById("journeyStartInput").value = state.journeyStartDate;
+      document.getElementById("learnDate").value = todayStr;
+
+      const goalSelect = document.getElementById("goalSelect");
+      const presets = ["7", "30", "90", "180", "365"];
+      if (presets.includes(String(state.goalDays))) {
+        goalSelect.value = String(state.goalDays);
+      } else {
+        goalSelect.value = "custom";
+        document.getElementById("customDaysInput").style.display = "inline-block";
+        document.getElementById("saveCustomBtn").style.display = "inline-block";
+        document.getElementById("customDaysInput").value = state.goalDays;
+      }
+
+      setThisWeek();
+      const now = new Date();
+      document.getElementById("reportMonthSelect").value = String(now.getMonth());
+      document.getElementById("reportYearInput").value = String(now.getFullYear());
+      const weekAgo = new Date();
+      weekAgo.setDate(now.getDate() - 6);
+      document.getElementById("customFromInput").value = toDateStr(weekAgo);
+      document.getElementById("customToInput").value = todayStr;
+
+      refreshAllViews();
+    }
+
+    function refreshAllViews() {
+      updateTimerAndGoal();
+      renderCalendar();
+      renderDayInspector();
+      renderPieChart();
+      renderLearnings();
+      if (document.getElementById("reportPreviewWrap").style.display === "block") {
+        previewReport();
+      }
+    }
+
+    function showTempStatus(id, msg) {
+      const el = document.getElementById(id);
+      el.textContent = msg;
+      setTimeout(() => { if (el.textContent === msg) el.textContent = ""; }, 3500);
+    }
+
+    // --- TIMER & GOAL ---
+    function updateStreakStart() {
+      const val = document.getElementById("streakStartInput").value;
+      if (!val) return;
+      state.streakStartTimestamp = new Date(val).getTime();
+      const startDay = toDateStr(new Date(state.streakStartTimestamp));
+      if (startDay < state.journeyStartDate) {
+        state.journeyStartDate = startDay;
+        document.getElementById("journeyStartInput").value = startDay;
+      }
+      saveState();
+      refreshAllViews();
+      showTempStatus("timerStatusMsg", "Streak start date saved.");
+    }
+
+    function updateJourneyStart() {
+      const val = document.getElementById("journeyStartInput").value;
+      if (!val) return;
+      state.journeyStartDate = val;
+      saveState();
+      refreshAllViews();
+      showTempStatus("timerStatusMsg", "Tracking start date updated.");
+    }
+
+    function updateGoalPreset() {
+      const val = document.getElementById("goalSelect").value;
+      const customInput = document.getElementById("customDaysInput");
+      const customBtn = document.getElementById("saveCustomBtn");
+      if (val === "custom") {
+        customInput.style.display = "inline-block";
+        customBtn.style.display = "inline-block";
+      } else {
+        customInput.style.display = "none";
+        customBtn.style.display = "none";
+        state.goalDays = parseInt(val, 10);
+        saveState();
+        updateTimerAndGoal();
+      }
+    }
+
+    function saveCustomDays() {
+      const days = parseInt(document.getElementById("customDaysInput").value, 10);
+      if (days > 0) {
+        state.goalDays = days;
+        saveState();
+        updateTimerAndGoal();
+      }
+    }
+
+    function updateTimerAndGoal() {
+      const now = Date.now();
+      const diff = Math.max(0, now - state.streakStartTimestamp);
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      document.getElementById("days").textContent = days;
+      document.getElementById("hours").textContent = hours;
+      document.getElementById("minutes").textContent = minutes;
+      document.getElementById("seconds").textContent = seconds;
+
+      const totalGoalMs = state.goalDays * 24 * 60 * 60 * 1000;
+      const pctCompleted = Math.min(100, Math.max(0, (diff / totalGoalMs) * 100));
+      const pctRemaining = Math.max(0, 100 - pctCompleted);
+
+      document.getElementById("completedText").textContent = `Done: ${pctCompleted.toFixed(2)}%`;
+      document.getElementById("remainingText").textContent = `Remaining: ${pctRemaining.toFixed(2)}%`;
+      document.getElementById("progressFill").style.width = `${pctCompleted}%`;
+
+      const circ = 289.03;
+      const offset = circ - (pctCompleted / 100) * circ;
+      document.getElementById("goalRingCircle").style.strokeDashoffset = offset.toFixed(2);
+      document.getElementById("ringPct").textContent = `${pctCompleted.toFixed(1)}%`;
+
+      const daysLeft = Math.max(0, state.goalDays - (diff / (1000 * 60 * 60 * 24)));
+      const targetDate = new Date(state.streakStartTimestamp + totalGoalMs).toLocaleDateString();
+
+      document.getElementById("goalDetails").textContent =
+        pctRemaining === 0
+          ? `Goal achieved! You completed your ${state.goalDays}-day target!`
+          : `${daysLeft.toFixed(1)} days remaining to reach ${state.goalDays} days (${targetDate}).`;
+    }
+
+    // --- PIE CHART ---
+    function getStatsForScope(scope) {
+      const todayStr = toDateStr(new Date());
+      let startStr = state.journeyStartDate;
+      const endStr = todayStr;
+
+      if (scope === "month") {
+        const now = new Date();
+        const monthStartStr = toDateStr(new Date(now.getFullYear(), now.getMonth(), 1));
+        startStr = monthStartStr > state.journeyStartDate ? monthStartStr : state.journeyStartDate;
+      }
+
+      if (startStr > endStr) return { cleanDays: 0, slipDays: 0, totalSlips: 0, totalDays: 0 };
+
+      let cleanDays = 0, slipDays = 0, totalSlips = 0;
+      const cur = parseDateStr(startStr);
+      const end = parseDateStr(endStr);
+      while (cur <= end) {
+        const key = toDateStr(cur);
+        const count = state.slips[key] || 0;
+        if (count > 0) { slipDays++; totalSlips += count; }
+        else { cleanDays++; }
+        cur.setDate(cur.getDate() + 1);
+      }
+      return { cleanDays, slipDays, totalSlips, totalDays: cleanDays + slipDays };
+    }
+
+    function renderPieChart() {
+      const scope = document.getElementById("pieScope").value;
+      const stats = getStatsForScope(scope);
+      const svg = document.getElementById("pieSvg");
+      const legend = document.getElementById("pieLegend");
+      svg.innerHTML = "";
+      legend.innerHTML = "";
+
+      const cx = 70, cy = 70, r = 56;
+
+      if (stats.totalDays === 0) {
+        const c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        c.setAttribute("cx", cx); c.setAttribute("cy", cy); c.setAttribute("r", r); c.setAttribute("fill", "#334155");
+        svg.appendChild(c);
+      } else if (stats.slipDays === 0) {
+        const c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        c.setAttribute("cx", cx); c.setAttribute("cy", cy); c.setAttribute("r", r); c.setAttribute("fill", "#10b981");
+        svg.appendChild(c);
+      } else if (stats.cleanDays === 0) {
+        const c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        c.setAttribute("cx", cx); c.setAttribute("cy", cy); c.setAttribute("r", r); c.setAttribute("fill", "#ef4444");
+        svg.appendChild(c);
+      } else {
+        const cleanAngle = (stats.cleanDays / stats.totalDays) * 2 * Math.PI;
+        const x1 = cx, y1 = cy - r;
+        const x2 = cx + r * Math.sin(cleanAngle);
+        const y2 = cy - r * Math.cos(cleanAngle);
+        const largeClean = cleanAngle > Math.PI ? 1 : 0;
+        const largeSlip = (2 * Math.PI - cleanAngle) > Math.PI ? 1 : 0;
+
+        const p1 = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        p1.setAttribute("d", `M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 ${largeClean} 1 ${x2} ${y2} Z`);
+        p1.setAttribute("fill", "#10b981");
+
+        const p2 = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        p2.setAttribute("d", `M ${cx} ${cy} L ${x2} ${y2} A ${r} ${r} 0 ${largeSlip} 1 ${x1} ${y1} Z`);
+        p2.setAttribute("fill", "#ef4444");
+
+        svg.appendChild(p1);
+        svg.appendChild(p2);
+      }
+
+      const inner = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      inner.setAttribute("cx", cx); inner.setAttribute("cy", cy); inner.setAttribute("r", 30); inner.setAttribute("fill", "#1e293b");
+      svg.appendChild(inner);
+
+      const cleanPct = stats.totalDays > 0 ? ((stats.cleanDays / stats.totalDays) * 100).toFixed(1) : "0.0";
+      const txt = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      txt.setAttribute("x", cx); txt.setAttribute("y", cy + 4);
+      txt.setAttribute("text-anchor", "middle"); txt.setAttribute("fill", "#f8fafc");
+      txt.setAttribute("font-size", "13"); txt.setAttribute("font-weight", "bold");
+      txt.textContent = `${cleanPct}%`;
+      svg.appendChild(txt);
+
+      const items = [
+        { color: "#10b981", label: `Clean Days: ${stats.cleanDays}` },
+        { color: "#ef4444", label: `Slip Days: ${stats.slipDays} (${stats.totalSlips} slips)` },
+        { color: "#3b82f6", label: `Total Days: ${stats.totalDays}` }
+      ];
+      items.forEach(i => {
+        const div = document.createElement("div");
+        div.className = "legend-item";
+        const dot = document.createElement("span");
+        dot.className = "dot"; dot.style.background = i.color;
+        const lbl = document.createElement("span");
+        lbl.textContent = i.label;
+        div.appendChild(dot); div.appendChild(lbl);
+        legend.appendChild(div);
+      });
+    }
+
+    // --- CALENDAR & PASSWORD-PROTECTED +1 SLIP ---
+    function changeCalMonth(delta) {
+      calMonth += delta;
+      if (calMonth < 0) { calMonth = 11; calYear--; }
+      if (calMonth > 11) { calMonth = 0; calYear++; }
+      renderCalendar();
+    }
+
+    function renderCalendar() {
+      const grid = document.getElementById("calGrid");
+      const label = document.getElementById("calMonthLabel");
+      grid.innerHTML = "";
+
+      const firstDay = new Date(calYear, calMonth, 1);
+      label.textContent = firstDay.toLocaleString("default", { month: "long", year: "numeric" });
+
+      const startWeekday = firstDay.getDay();
+      const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+      const todayStr = toDateStr(new Date());
+
+      for (let i = 0; i < startWeekday; i++) {
+        const empty = document.createElement("div");
+        empty.className = "cal-day empty";
+        grid.appendChild(empty);
+      }
+
+      for (let d = 1; d <= daysInMonth; d++) {
+        const dateObj = new Date(calYear, calMonth, d);
+        const dateStr = toDateStr(dateObj);
+        const slipCount = state.slips[dateStr] || 0;
+        const hasNote = state.learnings.some(l => l.date === dateStr);
+        const isTracked = dateStr >= state.journeyStartDate && dateStr <= todayStr;
+
+        const cell = document.createElement("div");
+        cell.className = "cal-day";
+        if (slipCount > 0) cell.classList.add("slip-day");
+        else if (isTracked) cell.classList.add("clean-day");
+        if (dateStr === selectedDateStr) cell.classList.add("selected");
+
+        cell.onclick = () => {
+          selectedDateStr = dateStr;
+          document.getElementById("learnDate").value = dateStr;
+          renderCalendar();
+          renderDayInspector();
+        };
+
+        const top = document.createElement("div");
+        top.className = "cal-day-top";
+        const num = document.createElement("span");
+        num.textContent = d;
+        top.appendChild(num);
+
+        if (hasNote) {
+          const noteDot = document.createElement("span");
+          noteDot.className = "badge-note";
+          top.appendChild(noteDot);
+        }
+
+        const bottom = document.createElement("div");
+        bottom.className = "cal-day-bottom";
+        if (slipCount > 0) {
+          const b = document.createElement("span");
+          b.className = "badge-slip";
+          b.textContent = `✗(${slipCount})`;
+          bottom.appendChild(b);
+        } else if (isTracked) {
+          const b = document.createElement("span");
+          b.className = "badge-clean";
+          b.textContent = "✓";
+          bottom.appendChild(b);
+        }
+
+        cell.appendChild(top);
+        cell.appendChild(bottom);
+        grid.appendChild(cell);
+      }
+    }
+
+    function renderDayInspector() {
+      document.getElementById("inspectorDateTitle").textContent = selectedDateStr;
+      const slipCount = state.slips[selectedDateStr] || 0;
+      const badge = document.getElementById("inspectorSlipBadge");
+
+      if (slipCount > 0) {
+        badge.className = "status-cross";
+        badge.textContent = `✗ Slipped ${slipCount} ${slipCount === 1 ? "time" : "times"}`;
+      } else {
+        badge.className = "status-tick";
+        badge.textContent = "✓ Clean (0 slips)";
+      }
+
+      const notesContainer = document.getElementById("inspectorLearnings");
+      notesContainer.innerHTML = "";
+      const dayNotes = state.learnings.filter(l => l.date === selectedDateStr);
+      if (dayNotes.length === 0) {
+        notesContainer.textContent = "No learning entries on this date.";
+      } else {
+        dayNotes.forEach(n => {
+          const p = document.createElement("div");
+          p.style.marginTop = "4px";
+          p.textContent = `• ${n.text}`;
+          notesContainer.appendChild(p);
+        });
+      }
+    }
+
+    function openSlipPasswordModal() {
+      document.getElementById("slipModalDateLabel").textContent = selectedDateStr;
+      document.getElementById("slipPassInput").value = "";
+      document.getElementById("slipModalError").textContent = "";
+      document.getElementById("slipPasswordModal").style.display = "flex";
+      setTimeout(() => document.getElementById("slipPassInput").focus(), 50);
+    }
+
+    function closeSlipModal() {
+      document.getElementById("slipPasswordModal").style.display = "none";
+      document.getElementById("slipPassInput").value = "";
+      document.getElementById("slipModalError").textContent = "";
+    }
+
+    function confirmAddSlip() {
+      const entered = document.getElementById("slipPassInput").value;
+      const err = document.getElementById("slipModalError");
+
+      if (entered !== APP_PASS) {
+        err.textContent = "Incorrect password. Slip was not added.";
+        return;
+      }
+
+      state.slips[selectedDateStr] = (state.slips[selectedDateStr] || 0) + 1;
+      if (selectedDateStr === toDateStr(new Date())) {
+        state.streakStartTimestamp = Date.now();
+        document.getElementById("streakStartInput").value = toLocalInputValue(state.streakStartTimestamp);
+      }
+
+      saveState();
+      closeSlipModal();
+      refreshAllViews();
+    }
+
+    // --- DAILY LEARNING ---
+    function addLearning() {
+      const dateVal = document.getElementById("learnDate").value || toDateStr(new Date());
+      const textEl = document.getElementById("learnText");
+      const errEl = document.getElementById("learnErrorMsg");
+      const textVal = textEl.value.trim();
+
+      if (!textVal) {
+        errEl.textContent = "Please write something you learned before saving.";
+        return;
+      }
+      errEl.textContent = "";
+
+      state.learnings.unshift({ id: Date.now(), date: dateVal, text: textVal });
+      textEl.value = "";
+      selectedDateStr = dateVal;
+      const sel = parseDateStr(dateVal);
+      calYear = sel.getFullYear();
+      calMonth = sel.getMonth();
+      saveState();
+      refreshAllViews();
+    }
+
+    function deleteLearning(id) {
+      state.learnings = state.learnings.filter(item => item.id !== id);
+      saveState();
+      refreshAllViews();
+    }
+
+    function renderLearnings() {
+      const list = document.getElementById("learningList");
+      list.innerHTML = "";
+
+      if (state.learnings.length === 0) {
+        const empty = document.createElement("p");
+        empty.style.color = "var(--muted)";
+        empty.style.fontSize = "0.88rem";
+        empty.textContent = "No learnings recorded yet. Add your first one above!";
+        list.appendChild(empty);
+        return;
+      }
+
+      const sorted = [...state.learnings].sort((a, b) => b.date.localeCompare(a.date) || b.id - a.id);
+      sorted.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "learning-item";
+
+        const content = document.createElement("div");
+        const dateEl = document.createElement("div");
+        dateEl.className = "learning-date";
+        dateEl.textContent = item.date;
+
+        const textEl = document.createElement("div");
+        textEl.textContent = item.text;
+
+        content.appendChild(dateEl);
+        content.appendChild(textEl);
+
+        const delBtn = document.createElement("button");
+        delBtn.className = "delete-btn";
+        delBtn.textContent = "Delete";
+        delBtn.onclick = () => deleteLearning(item.id);
+
+        card.appendChild(content);
+        card.appendChild(delBtn);
+        list.appendChild(card);
+      });
+    }
+
+    // --- REPORTS & PDF ---
+    function toggleReportControls() {
+      const mode = document.getElementById("reportMode").value;
+      document.getElementById("weekControls").style.display = mode === "week" ? "flex" : "none";
+      document.getElementById("monthControls").style.display = mode === "month" ? "flex" : "none";
+      document.getElementById("customControls").style.display = mode === "custom" ? "flex" : "none";
+    }
+
+    function setThisWeek() {
+      const now = new Date();
+      const sunday = new Date(now);
+      sunday.setDate(now.getDate() - now.getDay());
+      document.getElementById("weekStartInput").value = toDateStr(sunday);
+    }
+
+    function getReportDateRange() {
+      const mode = document.getElementById("reportMode").value;
+      const errEl = document.getElementById("reportErrorMsg");
+      errEl.textContent = "";
+      let start, end, titleLabel;
+
+      if (mode === "week") {
+        const startVal = document.getElementById("weekStartInput").value;
+        if (!startVal) { errEl.textContent = "Please select a week start date."; return null; }
+        start = parseDateStr(startVal);
+        end = new Date(start);
+        end.setDate(start.getDate() + 6);
+        titleLabel = `Weekly Report (${toDateStr(start)} to ${toDateStr(end)})`;
+      } else if (mode === "month") {
+        const m = parseInt(document.getElementById("reportMonthSelect").value, 10);
+        const y = parseInt(document.getElementById("reportYearInput").value, 10);
+        if (!y || y < 2000) { errEl.textContent = "Please enter a valid year."; return null; }
+        start = new Date(y, m, 1);
+        end = new Date(y, m + 1, 0);
+        const monthName = start.toLocaleString("default", { month: "long", year: "numeric" });
+        titleLabel = `Monthly Report (${monthName})`;
+      } else {
+        const fromVal = document.getElementById("customFromInput").value;
+        const toVal = document.getElementById("customToInput").value;
+        if (!fromVal || !toVal) { errEl.textContent = "Please select both dates."; return null; }
+        start = parseDateStr(fromVal);
+        end = parseDateStr(toVal);
+        if (start > end) { errEl.textContent = "'From' date must be before 'To' date."; return null; }
+        titleLabel = `Custom Report (${fromVal} to ${toVal})`;
+      }
+      return { start, end, titleLabel };
+    }
+
+    function buildReportRows(start, end) {
+      const rows = [];
+      const cur = new Date(start);
+      let sr = 1, cleanDays = 0, slipDays = 0, totalSlips = 0;
+      const todayStr = toDateStr(new Date());
+
+      while (cur <= end) {
+        const dateStr = toDateStr(cur);
+        const weekday = cur.toLocaleString("default", { weekday: "short" });
+        const slips = state.slips[dateStr] || 0;
+        const tracked = dateStr >= state.journeyStartDate && dateStr <= todayStr;
+        let status;
+        if (slips > 0) { slipDays++; totalSlips += slips; status = "slip"; }
+        else if (tracked) { cleanDays++; status = "clean"; }
+        else { status = "na"; }
+
+        const dayNotes = state.learnings
+          .filter(l => l.date === dateStr)
+          .map(l => `- ${l.text}`)
+          .join("\n");
+
+        rows.push({
+          srNo: sr++,
+          dateStr,
+          dateLabel: `${dateStr} (${weekday})`,
+          slips,
+          status,
+          learned: dayNotes || "-"
+        });
+        cur.setDate(cur.getDate() + 1);
+      }
+
+      return { rows, summary: { totalDays: cleanDays + slipDays, cleanDays, slipDays, totalSlips } };
+    }
+
+    function previewReport() {
+      const range = getReportDateRange();
+      if (!range) return null;
+
+      const { rows, summary } = buildReportRows(range.start, range.end);
+      const summaryText = `${range.titleLabel} | Tracked Days: ${summary.totalDays} | Clean: ${summary.cleanDays} | Slip Days: ${summary.slipDays} (Total Slips: ${summary.totalSlips})`;
+
+      document.getElementById("reportSummary").textContent = summaryText;
+      document.getElementById("printSummaryLine").textContent = summaryText;
+
+      const tbody = document.getElementById("reportPreviewBody");
+      tbody.innerHTML = "";
+
+      rows.forEach(r => {
+        const tr = document.createElement("tr");
+
+        const tdSr = document.createElement("td");
+        tdSr.textContent = r.srNo;
+
+        const tdDate = document.createElement("td");
+        tdDate.textContent = r.dateLabel;
+
+        const tdStatus = document.createElement("td");
+        if (r.status === "na") {
+          tdStatus.textContent = "-";
+        } else if (r.status === "clean") {
+          tdStatus.className = "status-tick";
+          tdStatus.textContent = "✓";
+        } else {
+          tdStatus.className = "status-cross";
+          tdStatus.textContent = `✗ (${r.slips} ${r.slips === 1 ? "time" : "times"})`;
+        }
+
+        const tdLearned = document.createElement("td");
+        tdLearned.style.whiteSpace = "pre-line";
+        tdLearned.textContent = r.learned;
+
+        tr.appendChild(tdSr);
+        tr.appendChild(tdDate);
+        tr.appendChild(tdStatus);
+        tr.appendChild(tdLearned);
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById("reportPreviewWrap").style.display = "block";
+      return { range, rows, summary };
+    }
+
+    // Pure-JS PDF 1.4 Generator
+    function pdfEscape(str) {
+      return String(str)
+        .replace(/•/g, "-")
+        .replace(/[“”]/g, '"')
+        .replace(/[‘’]/g, "'")
+        .replace(/—|–/g, "-")
+        .replace(/[^\x20-\x7E]/g, " ")
+        .replace(/\\/g, "\\\\")
+        .replace(/\(/g, "\\(")
+        .replace(/\)/g, "\\)");
+    }
+
+    function estimateTextWidth(str, fontSize) {
+      let w = 0;
+      for (let i = 0; i < str.length; i++) {
+        const ch = str[i];
+        if ("iljtfr.,:;!|' ()-/".includes(ch)) w += 0.30;
+        else if ("WMmwOQGDHNUCRKABC@%".includes(ch)) w += 0.72;
+        else w += 0.53;
+      }
+      return w * fontSize;
+    }
+
+    function wrapPdfText(text, maxWidth, fontSize) {
+      const paragraphs = String(text).split(/\r?\n/);
+      const lines = [];
+      for (const para of paragraphs) {
+        const words = para.split(/\s+/).filter(Boolean);
+        if (words.length === 0) { lines.push(""); continue; }
+        let current = words[0];
+        for (let i = 1; i < words.length; i++) {
+          const candidate = current + " " + words[i];
+          if (estimateTextWidth(candidate, fontSize) <= maxWidth) {
+            current = candidate;
+          } else {
+            lines.push(current);
+            current = words[i];
+          }
+        }
+        while (estimateTextWidth(current, fontSize) > maxWidth && current.length > 1) {
+          let cut = current.length - 1;
+          while (cut > 1 && estimateTextWidth(current.slice(0, cut), fontSize) > maxWidth) cut--;
+          lines.push(current.slice(0, cut));
+          current = current.slice(cut);
+        }
+        lines.push(current);
+      }
+      return lines.length ? lines : ["-"];
+    }
+
+    function generateBuiltInPDFBlob(titleLabel, rows, summary) {
+      const pageStreams = [];
+      let cmds = [];
+      let curY = 795;
+
+      function drawTableHeader() {
+        const h = 24;
+        cmds.push("0.118 0.161 0.231 rg");
+        cmds.push(`40 ${curY - h} 515 ${h} re f`);
+        cmds.push("0.20 0.25 0.33 RG 0.6 w");
+        cmds.push(`40 ${curY - h} 515 ${h} re S`);
+        cmds.push("1 1 1 rg");
+        cmds.push(`BT /F2 9.5 Tf 48 ${curY - 15} Td (Sr.No) Tj ET`);
+        cmds.push(`BT /F2 9.5 Tf 94 ${curY - 15} Td (Date) Tj ET`);
+        cmds.push(`BT /F2 9.5 Tf 222 ${curY - 15} Td (Status) Tj ET`);
+        cmds.push(`BT /F2 9.5 Tf 298 ${curY - 15} Td (What I Learned) Tj ET`);
+        curY -= h;
+      }
+
+      function startNewPage(isFirst) {
+        if (!isFirst) { pageStreams.push(cmds); cmds = []; }
+        curY = 795;
+        cmds.push("0.059 0.090 0.165 rg");
+        cmds.push(`BT /F2 14 Tf 40 ${curY} Td (StreakRise - Discipline and Learning Report) Tj ET`);
+        curY -= 18;
+        cmds.push("0.28 0.33 0.41 rg");
+        cmds.push(`BT /F1 9.5 Tf 40 ${curY} Td (${pdfEscape(titleLabel)}) Tj ET`);
+        curY -= 14;
+        const sumLine = `Tracked Days: ${summary.totalDays}  |  Clean Days: ${summary.cleanDays}  |  Slip Days: ${summary.slipDays}  |  Total Slips: ${summary.totalSlips}`;
+        cmds.push(`BT /F1 9 Tf 40 ${curY} Td (${pdfEscape(sumLine)}) Tj ET`);
+        curY -= 16;
+        drawTableHeader();
+      }
+
+      startNewPage(true);
+
+      for (const r of rows) {
+        const learnedLines = wrapPdfText(r.learned, 248, 9);
+        const rowH = Math.max(24, learnedLines.length * 12 + 10);
+        if (curY - rowH < 50) startNewPage(false);
+
+        const bottomY = curY - rowH;
+        const midY = curY - rowH / 2;
+
+        cmds.push("0.78 0.81 0.85 RG 0.5 w");
+        cmds.push(`40 ${bottomY} 515 ${rowH} re S`);
+        cmds.push(`88 ${curY} m 88 ${bottomY} l S`);
+        cmds.push(`196 ${curY} m 196 ${bottomY} l S`);
+        cmds.push(`292 ${curY} m 292 ${bottomY} l S`);
+
+        cmds.push("0.06 0.09 0.16 rg");
+        cmds.push(`BT /F1 9 Tf 56 ${midY - 3} Td (${pdfEscape(r.srNo)}) Tj ET`);
+        cmds.push(`BT /F1 9 Tf 94 ${midY - 3} Td (${pdfEscape(r.dateLabel)}) Tj ET`);
+
+        if (r.status === "na") {
+          cmds.push(`BT /F1 9 Tf 240 ${midY - 3} Td (-) Tj ET`);
+        } else if (r.status === "clean") {
+          const cx = 244;
+          cmds.push("0.063 0.725 0.506 RG 1.8 w 1 J");
+          cmds.push(`${cx - 5} ${midY + 0.5} m ${cx - 1.5} ${midY - 4} l ${cx + 6} ${midY + 5} l S`);
+        } else {
+          const cx = 211;
+          cmds.push("0.937 0.267 0.267 RG 1.8 w 1 J");
+          cmds.push(`${cx - 4} ${midY - 4} m ${cx + 4} ${midY + 4} l S`);
+          cmds.push(`${cx - 4} ${midY + 4} m ${cx + 4} ${midY - 4} l S`);
+          const slipTxt = `(${r.slips} ${r.slips === 1 ? "time" : "times"})`;
+          cmds.push("0.863 0.149 0.149 rg");
+          cmds.push(`BT /F2 8.5 Tf ${cx + 10} ${midY - 3} Td (${pdfEscape(slipTxt)}) Tj ET`);
+        }
+
+        cmds.push("0.06 0.09 0.16 rg");
+        let textY = curY - 14;
+        for (const line of learnedLines) {
+          cmds.push(`BT /F1 9 Tf 298 ${textY} Td (${pdfEscape(line)}) Tj ET`);
+          textY -= 12;
+        }
+        curY = bottomY;
+      }
+
+      pageStreams.push(cmds);
+
+      const totalPages = pageStreams.length;
+      const renderedStreams = pageStreams.map((arr, idx) => {
+        const footer = `0.45 0.50 0.58 rg\nBT /F1 8 Tf 40 28 Td (Page ${idx + 1} of ${totalPages}) Tj ET\nBT /F1 8 Tf 300 28 Td (Created by Birendra Dangi, Copyright Reserved 2026) Tj ET`;
+        return arr.join("\n") + "\n" + footer + "\n";
+      });
+
+      let pdf = "%PDF-1.4\n";
+      const offsets = [0];
+      function addObj(id, body) {
+        offsets[id] = pdf.length;
+        pdf += `${id} 0 obj\n${body}\nendobj\n`;
+      }
+
+      const kids = [];
+      for (let i = 0; i < totalPages; i++) kids.push(`${5 + i * 2} 0 R`);
+
+      addObj(1, "<< /Type /Catalog /Pages 2 0 R >>");
+      addObj(2, `<< /Type /Pages /Kids [ ${kids.join(" ")} ] /Count ${totalPages} >>`);
+      addObj(3, "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>");
+      addObj(4, "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>");
+
+      for (let i = 0; i < totalPages; i++) {
+        const pageId = 5 + i * 2;
+        const contentId = 6 + i * 2;
+        const stream = renderedStreams[i];
+        addObj(pageId, `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents ${contentId} 0 R >>`);
+        addObj(contentId, `<< /Length ${stream.length} >>\nstream\n${stream}endstream`);
+      }
+
+      const xrefPos = pdf.length;
+      const totalObjs = 4 + totalPages * 2;
+      pdf += `xref\n0 ${totalObjs + 1}\n0000000000 65535 f \n`;
+      for (let i = 1; i <= totalObjs; i++) {
+        pdf += String(offsets[i]).padStart(10, "0") + " 00000 n \n";
+      }
+      pdf += `trailer\n<< /Size ${totalObjs + 1} /Root 1 0 R >>\nstartxref\n${xrefPos}\n%%EOF`;
+
+      const bytes = new Uint8Array(pdf.length);
+      for (let i = 0; i < pdf.length; i++) bytes[i] = pdf.charCodeAt(i) & 0xff;
+      return new Blob([bytes], { type: "application/pdf" });
+    }
+
+    // ===== PDF actions: View / Download / Share (work in the Android app AND in a browser) =====
+    const _plugins = {};
+    function nativePlugin(name) {
+      if (_plugins[name]) return _plugins[name];
+      try {
+        const C = window.Capacitor;
+        const p = (C.Plugins && C.Plugins[name]) || C.registerPlugin(name);
+        _plugins[name] = p;
+        return p;
+      } catch (e) { return null; }
+    }
+
+    function pdfFilename(label) {
+      return "streakrise-report-" + label.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") + ".pdf";
+    }
+
+    function blobToBase64(blob) {
+      return new Promise((resolve, reject) => {
+        const r = new FileReader();
+        r.onload = () => resolve(String(r.result).split(",")[1]);
+        r.onerror = () => reject(r.error || new Error("Could not read PDF"));
+        r.readAsDataURL(blob);
+      });
+    }
+
+    function buildReportFile() {
+      const data = previewReport();
+      if (!data) return null;
+      const { range, rows, summary } = data;
+      return {
+        blob: generateBuiltInPDFBlob(range.titleLabel, rows, summary),
+        filename: pdfFilename(range.titleLabel),
+        title: range.titleLabel
+      };
+    }
+
+    function showReportError(msg) {
+      const el = document.getElementById("reportErrorMsg");
+      el.textContent = msg;
+      setTimeout(() => { if (el.textContent === msg) el.textContent = ""; }, 6000);
+    }
+
+    // Write the PDF into the app cache (native) and return its file:// URI
+    async function writeCachePdf(file) {
+      const FS = nativePlugin("Filesystem");
+      if (!FS) throw new Error("Filesystem plugin missing");
+      const b64 = await blobToBase64(file.blob);
+      const res = await FS.writeFile({ path: "reports/" + file.filename, data: b64, directory: "CACHE", recursive: true });
+      return res.uri;
+    }
+
+    async function nativeShare(file) {
+      const Share = nativePlugin("Share");
+      if (!Share) throw new Error("Share plugin missing");
+      const uri = await writeCachePdf(file);
+      await Share.share({ title: "StreakRise Report", text: file.title, url: uri, dialogTitle: "Share or save PDF" });
+    }
+
+    function browserDownload(file) {
+      if (lastBlobUrl) URL.revokeObjectURL(lastBlobUrl);
+      lastBlobUrl = URL.createObjectURL(file.blob);
+      const a = document.createElement("a");
+      a.href = lastBlobUrl;
+      a.download = file.filename;
+      a.style.display = "none";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    // VIEW: opens the PDF in the phone's PDF viewer
+    async function viewPDF() {
+      const file = buildReportFile();
+      if (!file) return;
+      if (IS_NATIVE) {
+        try {
+          const uri = await writeCachePdf(file);
+          const Opener = nativePlugin("FileOpener");
+          if (!Opener) throw new Error("FileOpener plugin missing");
+          await Opener.open({ filePath: uri, contentType: "application/pdf", openWithDefault: true });
+          showTempStatus("reportStatusMsg", "Opening PDF...");
+        } catch (e) {
+          const msg = String((e && e.message) || e);
+          if (/activity not found/i.test(msg)) {
+            showReportError("No PDF viewer app found. Install Google Drive or any PDF reader, or use Share PDF.");
+          } else {
+            try { await nativeShare(file); } catch (e2) { showReportError("Could not open the PDF: " + msg); }
+          }
+        }
+      } else {
+        if (lastBlobUrl) URL.revokeObjectURL(lastBlobUrl);
+        lastBlobUrl = URL.createObjectURL(file.blob);
+        const w = window.open(lastBlobUrl, "_blank");
+        if (!w) { browserDownload(file); showTempStatus("reportStatusMsg", "Pop-up blocked, so the PDF was downloaded instead."); }
+      }
+    }
+
+    // DOWNLOAD: saves the PDF into Documents/StreakRise on the phone
+    async function downloadPDF() {
+      const file = buildReportFile();
+      if (!file) return;
+      if (IS_NATIVE) {
+        try {
+          const FS = nativePlugin("Filesystem");
+          if (!FS) throw new Error("Filesystem plugin missing");
+          const b64 = await blobToBase64(file.blob);
+          await FS.writeFile({ path: "StreakRise/" + file.filename, data: b64, directory: "DOCUMENTS", recursive: true });
+          showTempStatus("reportStatusMsg", "Saved to Documents/StreakRise/" + file.filename);
+        } catch (e) {
+          // Storage blocked on this phone: fall back to the share sheet (Save to Drive / Files / WhatsApp ...)
+          try { await nativeShare(file); showTempStatus("reportStatusMsg", "Choose where to save the PDF."); }
+          catch (e2) { showReportError("Could not save the PDF: " + String((e && e.message) || e)); }
+        }
+      } else {
+        browserDownload(file);
+        showTempStatus("reportStatusMsg", "PDF downloaded.");
+      }
+    }
+
+    // SHARE: opens the phone share sheet with the PDF attached
+    async function sharePDF() {
+      const file = buildReportFile();
+      if (!file) return;
+      if (IS_NATIVE) {
+        try { await nativeShare(file); }
+        catch (e) {
+          const msg = String((e && e.message) || e);
+          if (!/cancel/i.test(msg)) showReportError("Could not share the PDF: " + msg);
+        }
+        return;
+      }
+      const f = new File([file.blob], file.filename, { type: "application/pdf" });
+      if (navigator.canShare && navigator.canShare({ files: [f] })) {
+        try { await navigator.share({ title: "StreakRise Report", text: file.title, files: [f] }); }
+        catch (err) { if (err.name !== "AbortError") showReportError("Could not share the file."); }
+      } else {
+        browserDownload(file);
+        showTempStatus("reportStatusMsg", "Sharing is not supported here, so the PDF was downloaded.");
+      }
+    }
+
+    // Boot
+    loadState();
+    initUI();
+    setInterval(() => {
+      if (isUnlocked) updateTimerAndGoal();
+    }, 1000);
+  </script>
+</body>
+</html>

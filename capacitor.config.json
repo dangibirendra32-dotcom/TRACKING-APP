@@ -1,0 +1,8 @@
+{
+  "appId": "com.birendradangi.streakrise",
+  "appName": "StreakRise",
+  "webDir": "www",
+  "android": {
+    "allowMixedContent": false
+  }
+}
